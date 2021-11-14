@@ -19,7 +19,7 @@ import br.com.sprj.forum.repository.UserRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

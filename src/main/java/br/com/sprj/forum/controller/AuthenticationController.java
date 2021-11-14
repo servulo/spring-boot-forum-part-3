@@ -20,25 +20,25 @@ import br.com.sprj.forum.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod")
+@Profile(value = { "prod", "test" })
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenService tokenService;
+	@Autowired
+	private TokenService tokenService;
 
-    @PostMapping
-    public ResponseEntity<TokenDto> authenticate(@RequestBody @Valid LoginForm form) {
-	UsernamePasswordAuthenticationToken loginData = form.converter();
-	try {
-	    Authentication authentication = authenticationManager.authenticate(loginData);
-	    String token = tokenService.generateToken(authentication);
-	    return ResponseEntity.ok(new TokenDto(token, "Bearer"));
-	} catch (AuthenticationException e) {
-	    return ResponseEntity.badRequest().build();
+	@PostMapping
+	public ResponseEntity<TokenDto> authenticate(@RequestBody @Valid LoginForm form) {
+		UsernamePasswordAuthenticationToken loginData = form.converter();
+		try {
+			Authentication authentication = authenticationManager.authenticate(loginData);
+			String token = tokenService.generateToken(authentication);
+			return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+		} catch (AuthenticationException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
-    }
 
 }
